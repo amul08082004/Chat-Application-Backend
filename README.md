@@ -81,25 +81,6 @@ Connect: `new SockJS('http://localhost:8080/ws')`, then STOMP CONNECT with heade
 - `/app/chat.delivered` → `{messageId}` (client acks a message it just received live)
 - `/app/chat.seen` → `{roomId}` (mark everything in an opened chat as seen) or `{messageId}` for one message
 
-### Minimal browser client example
-
-```html
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.6.1/sockjs.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
-<script>
-  const token = "PASTE_JWT_HERE";
-  const socket = new SockJS('http://localhost:8080/ws');
-  const stomp = Stomp.over(socket);
-
-  stomp.connect({ Authorization: 'Bearer ' + token }, () => {
-    stomp.subscribe('/topic/room.1', msg => console.log('message', JSON.parse(msg.body)));
-    stomp.subscribe('/topic/room.1.receipts', msg => console.log('receipt', JSON.parse(msg.body)));
-    stomp.subscribe('/topic/presence', msg => console.log('presence', JSON.parse(msg.body)));
-
-    stomp.send('/app/chat.send', {}, JSON.stringify({ roomId: 1, content: 'hey!' }));
-  });
-</script>
-```
 
 ## Notes / production hardening ideas
 
